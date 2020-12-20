@@ -1,0 +1,32 @@
+version: "3.2"
+
+services:
+  web:
+    image: docker-nodejs
+    build:
+      context: .
+    environment:
+      - MONGO_USERNAME=$MONGO_USERNAME
+      - MONGO_PASSWORD=$MONGO_PASSWORD
+      - MONGO_HOSTNAME=mongo-db
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB
+    ports:
+      - 3005:3000
+    networks:
+      - ing-web
+
+  mongo-db:
+    image: mongo:4.4.2
+    networks:
+      - ing-web
+    volumes:
+      - dbdata:/data/db
+
+volumes:
+  dbdata:
+    external: true
+
+networks:
+  ing-web:
+    external: true
